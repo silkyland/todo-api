@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your_jwt_secret_here
+      - DB_PATH=/app/data/todo.db
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - db-init
+
+  db-init:
+    build:
+      context: .
+      dockerfile: Dockerfile.init
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_PATH=/app/data/todo.db
+
+volumes:
+  data:
